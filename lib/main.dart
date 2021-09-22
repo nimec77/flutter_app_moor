@@ -13,8 +13,6 @@ import 'package:sqlite3/open.dart';
 // import 'package:sqlite3/sqlite3.dart';
 
 void main() {
-  open.overrideFor(OperatingSystem.linux, _openOnLinux);
-
   runApp(MyApp(db: _createMoorIsolateAndConnect()));
 
   // db.dispose();
@@ -43,6 +41,8 @@ Future<MoorIsolate> _createMoorIsolate() async {
 }
 
 void _startBackground(_IsolateStartRequest request) {
+  open.overrideFor(OperatingSystem.linux, _openOnLinux);
+
   final executor = VmDatabase(File(request.targetPath), logStatements: true);
 
   final moorIsolate = MoorIsolate.inCurrent(() => DatabaseConnection.fromExecutor(executor));
